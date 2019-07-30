@@ -1,0 +1,31 @@
+#Missing Data
+
+#imputing data: Making a guess of what missing values will be and using the mean in all missing values
+
+#~~imputer method
+from sklearn.preprocessing import Imputer
+imp = Imputer(missing_values='NaN', strategy='mean', axis=0) #axis=0 = columns
+
+imp.fit(X)
+
+X= imp.transform(X)
+
+#~~pipeline method
+
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import Imputer
+
+imp = Imputer(missing_values='NaN', strategy='mean', axis=0) #axis=0 = columns
+logreg = LogissticRegression()
+
+steps = [('imputation', imp), ('logistic_regression',logreg)]
+
+pipeline = Pipeline(steps)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 42)
+
+pipeline.fit(X_train, y_train)
+
+y_pred = pipeline.predict(X_test, y_test)
+
+pipeline.score(X_test, y_test)
